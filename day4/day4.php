@@ -8,7 +8,8 @@ if ($file){
 }
 $matrix = turnToMatrix($linesAsStrings);
 
-print "First result: ".countAll($matrix);
+echo "First result:  ".countAll($matrix);
+echo "\n"."Second result: ".countXs($matrix);
 
 function turnToMatrix($linesAsStrings){
     $matrix = [];
@@ -23,6 +24,52 @@ function countAll($matrix){
     $count += countCollumns($matrix);
     $count += countDiagonals($matrix);
     return $count;
+}
+
+function countXs($matrix){
+    $res = 0;
+    for($i = 0; $i < count($matrix) - 2; $i++){
+        for($j = 0; $j < count($matrix[0]) - 2; $j++){
+            if (findX($matrix, $i, $j)){
+                $res++;
+            }
+        }
+    }
+    return $res;
+}
+
+function findX($matrix, $i, $j){
+    $line1 = array_slice($matrix[$i], $j, 3);
+    $line1 = $line1[0].$line1[2];
+    $line2 = $matrix[$i+1][$j+1];
+    $line3 = array_slice($matrix[$i+2], $j, 3);
+    $line3 = $line3[0].$line3[2];
+
+    if($line1[0] == $line1[1]){
+        if($line3[0] == $line3[1]){
+            if($line1[0] == "M" AND $line3[0] == "S"){
+                if($line2 == "A") return True;
+            }
+            elseif($line1[0] == "S" AND $line3[0] == "M"){
+                if($line2 == "A") return True;
+            }
+        }
+    }
+    elseif(($line1 == "MS" AND $line3 == "MS") OR ($line1 == "SM" AND $line3 == "SM")){
+        if($line2 == "A") return True;
+    }
+
+    return False;
+}
+
+function printX($matrix, $i, $j){
+    echo "\n";
+    for($x = $i; $x < $i+3; $x++){
+        for($y = $j; $y < $j+3; $y++){
+            echo $matrix[$x][$y]." ";
+        }
+        echo "\n";
+    }
 }
 
 function countLines($matrix){
