@@ -3,8 +3,8 @@ import java.io.FileNotFoundException
 
 fun main(){
     val fileName = "src/main/resources/input.txt"
-    var rules = mutableListOf<MutableList<String>>()
-    var printedOutput = mutableListOf<String>()
+    val rules = mutableListOf<MutableList<String>>()
+    val printedOutput = mutableListOf<String>()
     var foundEmptyLine = false
     try {
         File(fileName).useLines { lines ->
@@ -29,8 +29,9 @@ fun main(){
     print("\nSecond Result: " + res2)
 }
 
-fun getCorrectLines(rules: MutableList<MutableList<String>>, printedOutput: MutableList<String>, invert: Boolean): MutableList<String> {
-    var res = mutableListOf<String>()
+fun getCorrectLines(rules: MutableList<MutableList<String>>, printedOutput: MutableList<String>,
+                    invert: Boolean): MutableList<String> {
+    val res = mutableListOf<String>()
     for(line in printedOutput){
         if(invert xor testRules(rules, line)){
             res.add(line)
@@ -41,7 +42,7 @@ fun getCorrectLines(rules: MutableList<MutableList<String>>, printedOutput: Muta
 
 fun testRules(rules: MutableList<MutableList<String>>, line: String): Boolean {
     if(rules.isEmpty()) return true
-    var rule = rules.first()
+    val rule = rules.first()
     if(line.contains(rule[0]) && line.contains(rule[1])){
         if(line.indexOf(rule[0]) < line.indexOf(rule[1])){
             return testRules(rules.drop(1).toMutableList(), line)
@@ -61,7 +62,7 @@ fun addMiddleValues(lines: MutableList<String>): Int{
 }
 
 fun correctOrder(rules: MutableList<MutableList<String>>, lines: MutableList<String>): MutableList<String>{
-    var res = mutableListOf<String>()
+    val res = mutableListOf<String>()
     for(line in lines){
         res.add(correctLine(rules, line))
     }
@@ -71,8 +72,8 @@ fun correctOrder(rules: MutableList<MutableList<String>>, lines: MutableList<Str
 fun correctLine(rules: MutableList<MutableList<String>>, line: String): String {
     if(line.isEmpty()) return ""
     if(testRules(rules, line)) return line
-    var ll = line.split(",")
-    var res = mutableListOf<String>()
+    val ll = line.split(",")
+    val res = mutableListOf<String>()
     for(num in ll){
         insertCorrectly(num, rules, res)
     }
@@ -84,7 +85,6 @@ fun insertCorrectly(num: String, rules: MutableList<MutableList<String>>, res: M
         var canInsert = true
         for (rule in rules) {
             if (rule[1] == num) {
-                // Check if placing `num` here violates any rule
                 if (i < res.size && res.subList(i, res.size).contains(rule[0])) {
                     canInsert = false
                     break
