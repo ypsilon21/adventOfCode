@@ -3,7 +3,7 @@ $file = fopen("input.txt", "r");
 $linesAsStrings = [];
 if ($file){
     while (($line = fgets($file)) !== false) {
-        $linesAsStrings[] = $line;
+        $linesAsStrings[] = rtrim($line);
     }
 }
 $matrix = turnToMatrix($linesAsStrings);
@@ -41,7 +41,7 @@ function countLines($matrix){
 function countCollumns($matrix){
     $res = 0;
     for($i = 0; $i < count($matrix[0]); $i++){
-        for($j = 0; $j < count($matrix) - 4; $j++){
+        for($j = 0; $j < count($matrix) - 3; $j++){
             if(($matrix[$j][$i] == "X" AND $matrix[$j+1][$i] == "M" AND $matrix[$j+2][$i] == "A" AND $matrix[$j+3][$i] == "S")
                     OR ($matrix[$j][$i] == "S" AND $matrix[$j+1][$i] == "A" AND $matrix[$j+2][$i] == "M" AND $matrix[$j+3][$i] == "X")){
                 $res++;
@@ -57,26 +57,34 @@ function countDiagonals($matrix){
         $matrix[$i] = shiftChars($matrix[$i], $i);
     }
     for($i = 0; $i < count($matrix2); $i++){
-        $matrix2[$i] = shiftChars($matrix2[$i], -$i);
+        $matrix2[$i] = shiftChars($matrix2[$i], -$i-1);
     }
     return countCollumns($matrix) + countCollumns($matrix2);
 }
 
 function shiftChars($line, $n){
     $res = [];
-    if($n >= 0){
-        for($i = 0; $i<$n; $i++){
+    $length = count($line);
+    
+    if ($n >= 0) {
+        for($i = 0; $i <= $n; $i++){
             $res[] = "0";
         }
-        for($i = 0; $i < count($line)-$n; $i++){
-            $res[] = $line[$i];
+        foreach($line as $char){
+            $res[] = $char;
         }
-    }
-    else{
-        for ($i = -$n; $i < count($line); $i++) {
-            $res[] = $line[$i];
+        for($i = 0; $i < $length - $n - 1; $i++){
+            $res[] = "0";
         }
-        for ($i = 0; $i < abs($n); $i++) {
+    } else {
+        $n = -($n+1);
+        for($i = 0; $i < $length - $n - 1; $i++){
+            $res[] = "0";
+        }
+        foreach($line as $char){
+            $res[] = $char;
+        }
+        for($i = 0; $i <= $n; $i++){
             $res[] = "0";
         }
     }
