@@ -9,6 +9,7 @@ for line in lines:
     ll.append(line.split(' '))
 
 res = 0
+res2 = 0
 
 def validate(line):
     for i in range(len(line) - 1):
@@ -30,9 +31,24 @@ def asc_desc(line):
 
     return False
 
+def lineVersions(line):
+    res = []
+    res.append(line)
+
+    for i in range(len(line)):
+        newline = line[:i] + line[i+1:]
+        res.append(newline)
+    return res
+
 for line in ll:
     if asc_desc(line) and validate(line): 
         res += 1  
 
+for line in ll:
+    for x in lineVersions(line):
+        if asc_desc(x) and validate(x): 
+            res2 += 1 
+            break
 
-print(res)
+print(f"First result:  {res}")
+print(f"Second result: {res2}")
