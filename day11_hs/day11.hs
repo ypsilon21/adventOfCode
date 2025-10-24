@@ -9,7 +9,7 @@ main = do
     --res2
     let res2 = lenIndv after25Blinks 50
     print("Second Result: doesnt work :(")
-    --print ("Second Result: " ++ show res2)
+    print ("Second Result: " ++ show res2)
         where 
             lenIndv::[Int]->Int->Int
             lenIndv [] _     = 0
